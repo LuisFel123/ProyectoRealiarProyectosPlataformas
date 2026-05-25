@@ -9,7 +9,7 @@ import { Navbar } from "./components/Navbar";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { Sponsors } from "./components/Sponsors";
 import "./App.css";
-import { Plataformas } from "./plataformas/Plataformas";
+import Plataformas  from "./plataformas/Plataformas";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
