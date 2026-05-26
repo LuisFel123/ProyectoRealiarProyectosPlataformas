@@ -1,10 +1,5 @@
 import { useState } from "react";
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -13,10 +8,9 @@ import {
 } from "@/components/ui/sheet";
 
 import { buttonVariants } from "./ui/button";
-import { Menu } from "lucide-react";
+import { Menu, MessageCircle, LogIn } from "lucide-react";
 
 import miImagen from "../assets/lufra.png";
-import { MessageCircle } from "lucide-react";
 
 interface RouteProps {
   href: string;
@@ -24,120 +18,160 @@ interface RouteProps {
 }
 
 const routeList: RouteProps[] = [
-  
   {
-    href:"/plataformas",
-    label:"Plataformas",
+    href: "/plataformas",
+    label: "Plataformas",
   },
   {
     href: "/gorras",
     label: "Gorras",
   },
   {
+    href: "/ropa",
+    label: "Ropa",
+  },
+  {
     href: "/",
     label: "Inicio",
-  }
-  
+  },
 ];
 
 export const NavbarGorrasPla = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
-    <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
-      <NavigationMenu className="mx-auto">
-        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
-          <NavigationMenuItem className="font-bold">
-            <a
-              rel="noreferrer noopener"
-              href="/"
-              className="ml-2 text-xl flex items-center gap-2"
-            >
-              <img
-                src={miImagen}
-                alt="Descripción"
-                className="w-8 h-8 object-contain"
-              />
-              <span>INNOVATECH</span>
-            </a>
-          </NavigationMenuItem>
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black text-white">
+      <div className="mx-auto flex h-16 w-full max-w-[1500px] items-center justify-between px-4">
+        {/* LOGO */}
+        <a
+          rel="noreferrer noopener"
+          href="/"
+          className="flex shrink-0 items-center gap-2"
+        >
+          <img
+            src={miImagen}
+            alt="Logo"
+            className="h-10 w-10 shrink-0 object-contain"
+          />
 
-          {/* mobile */}
-          <span className="flex md:hidden">
-            {/*<ModeToggle />*/}
-
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="px-2">
-                <Menu
-                  className="flex md:hidden h-5 w-5"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <span className="sr-only">Menu Icon</span>
-                </Menu>
-              </SheetTrigger>
-
-              <SheetContent side={"left"}>
-                <SheetHeader>
-                  <SheetTitle className="font-bold text-xl">
-                    INNOVATECH
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
-                  {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      rel="noreferrer noopener"
-                      key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className={buttonVariants({ variant: "ghost" })}
-                    >
-                      {label}
-                    </a>
-                  ))}
-                 
-                    <a
-                      rel="noreferrer noopener"
-                      href="https://wa.me/529514362937"
-                      target="_blank"
-                      className={`border ${buttonVariants({ variant: "secondary" })}`}
-                    >
-                      <MessageCircle className="mr-2 w-5 h-5" />
-                      Contáctanos
-                    </a>
-                  
-                </nav>
-              </SheetContent>
-            </Sheet>
+          <span className="whitespace-nowrap text-xl font-black text-white sm:text-2xl">
+            INNOVATECH
           </span>
+        </a>
 
-          {/* desktop */}
-          <nav className="hidden md:flex gap-2">
-            {routeList.map((route: RouteProps, i) => (
-              <a
-                rel="noreferrer noopener"
-                href={route.href}
-                key={i}
-                className={`text-[17px] ${buttonVariants({
-                  variant: "ghost",
-                })}`}
+        {/* MOBILE */}
+        <div className="flex md:hidden">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-white transition hover:bg-zinc-900"
               >
-                {route.label}
-              </a>
-            ))}
-          </nav>
+                <Menu className="h-7 w-7" />
+              </button>
+            </SheetTrigger>
 
-          <div className="hidden md:flex gap-2">
+            <SheetContent
+              side="left"
+              className="w-[290px] border-r border-zinc-800 bg-black px-6 text-white sm:w-[340px]"
+            >
+              <SheetHeader>
+                <SheetTitle className="flex items-center justify-center gap-2 text-2xl font-black text-white">
+                  <img
+                    src={miImagen}
+                    alt="Logo"
+                    className="h-9 w-9 object-contain"
+                  />
+                  INNOVATECH
+                </SheetTitle>
+              </SheetHeader>
+
+              <nav className="mt-10 flex flex-col items-center justify-center gap-5 text-center">
+                {routeList.map(({ href, label }: RouteProps) => (
+                  <a
+                    rel="noreferrer noopener"
+                    key={label}
+                    href={href}
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-md px-4 py-2 text-lg font-bold text-white transition hover:bg-zinc-900"
+                  >
+                    {label}
+                  </a>
+                ))}
+
+                <a
+                  rel="noreferrer noopener"
+                  href="https://wa.me/529514362937"
+                  target="_blank"
+                  onClick={() => setIsOpen(false)}
+                  className="mt-2 flex items-center justify-center rounded-md bg-zinc-800 px-6 py-3 text-lg font-bold text-white transition hover:bg-zinc-700"
+                >
+                  <MessageCircle className="mr-2 h-6 w-6" />
+                  Contáctanos
+                </a>
+
+                <a
+                  rel="noreferrer noopener"
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center rounded-md bg-zinc-800 px-6 py-3 text-lg font-bold text-white transition hover:bg-zinc-700"
+                >
+                  <LogIn className="mr-2 h-6 w-6" />
+                  Iniciar sesión
+                </a>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* DESKTOP */}
+        <nav className="hidden flex-1 items-center justify-center gap-1 md:flex">
+          {routeList.map((route: RouteProps, i) => (
             <a
               rel="noreferrer noopener"
-              href="https://wa.me/529514362937"
-              target="_blank"
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
+              href={route.href}
+              key={i}
+              className={`whitespace-nowrap text-sm text-white 2xl:text-base ${buttonVariants(
+                {
+                  variant: "ghost",
+                }
+              )}`}
             >
-              <MessageCircle className="mr-2 w-5 h-5" />
-              Contáctanos
+              {route.label}
             </a>
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu>
+          ))}
+        </nav>
+
+        {/* BOTONES DESKTOP */}
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
+          <a
+            rel="noreferrer noopener"
+            href="https://wa.me/529514362937"
+            target="_blank"
+            className={`whitespace-nowrap border border-zinc-700 bg-zinc-800 text-white hover:bg-zinc-700 ${buttonVariants(
+              {
+                variant: "secondary",
+              }
+            )}`}
+          >
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Contáctanos
+          </a>
+
+          <a
+            rel="noreferrer noopener"
+            href="/login"
+            className={`whitespace-nowrap border border-zinc-700 bg-zinc-800 text-white hover:bg-zinc-700 ${buttonVariants(
+              {
+                variant: "secondary",
+              }
+            )}`}
+          >
+            <LogIn className="mr-2 h-5 w-5" />
+            Iniciar sesión
+          </a>
+        </div>
+      </div>
     </header>
   );
 };

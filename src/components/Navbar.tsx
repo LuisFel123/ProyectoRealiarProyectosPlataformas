@@ -1,10 +1,5 @@
 import { useState } from "react";
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -13,14 +8,14 @@ import {
 } from "@/components/ui/sheet";
 
 import { buttonVariants } from "./ui/button";
-import { Menu } from "lucide-react";
+import { Menu, MessageCircle, ChevronDown } from "lucide-react";
 
 import miImagen from "../assets/lufra.png";
-import { MessageCircle } from "lucide-react";
 
 interface RouteProps {
-  href: string;
+  href?: string;
   label: string;
+  children?: RouteProps[];
 }
 
 const routeList: RouteProps[] = [
@@ -45,6 +40,23 @@ const routeList: RouteProps[] = [
     label: "Proyectos",
   },
   {
+    href: "/plataformas",
+    label: "Plataformas",
+  },
+  {
+    label: "Tienda",
+    children: [
+      {
+        href: "/gorras",
+        label: "Gorras",
+      },
+      {
+        href: "/ropa",
+        label: "Ropa",
+      },
+    ],
+  },
+  {
     href: "#contacto",
     label: "Contacto",
   },
@@ -52,114 +64,225 @@ const routeList: RouteProps[] = [
     href: "#faq",
     label: "Preguntas",
   },
-  {
-    href:"/plataformas",
-    label:"Plataformas",
-  },
-   {
-    href: "/gorras",
-    label: "Gorras",
-   }
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(
+    null
+  );
+
   return (
-    <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
-      <NavigationMenu className="mx-auto">
-        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
-          <NavigationMenuItem className="font-bold">
-            <a
-              rel="noreferrer noopener"
-              href="/"
-              className="ml-2 text-xl flex items-center gap-2"
-            >
-              <img
-                src={miImagen}
-                alt="Descripción"
-                className="w-8 h-8 object-contain"
-              />
-              <span>INNOVATECH</span>
-            </a>
-          </NavigationMenuItem>
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-black text-white">
+      <div className="mx-auto flex h-16 w-full max-w-[1500px] items-center justify-between px-4">
+        {/* LOGO IZQUIERDA */}
+        <a
+          rel="noreferrer noopener"
+          href="/"
+          className="flex shrink-0 items-center gap-2"
+          onClick={() => {
+            setOpenDropdown(null);
+            setOpenMobileDropdown(null);
+          }}
+        >
+          <img
+            src={miImagen}
+            alt="Logo"
+            className="h-10 w-10 shrink-0 object-contain"
+          />
 
-          {/* mobile */}
-          <span className="flex md:hidden">
-            {/*<ModeToggle />*/}
-
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="px-2">
-                <Menu
-                  className="flex md:hidden h-5 w-5"
-                  onClick={() => setIsOpen(true)}
-                >
-                  <span className="sr-only">Menu Icon</span>
-                </Menu>
-              </SheetTrigger>
-
-              <SheetContent side={"left"}>
-                <SheetHeader>
-                  <SheetTitle className="font-bold text-xl">
-                    INNOVATECH
-                  </SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col justify-center items-center gap-2 mt-4">
-                  {routeList.map(({ href, label }: RouteProps) => (
-                    <a
-                      rel="noreferrer noopener"
-                      key={label}
-                      href={href}
-                      onClick={() => setIsOpen(false)}
-                      className={buttonVariants({ variant: "ghost" })}
-                    >
-                      {label}
-                    </a>
-                  ))}
-                 
-                    <a
-                      rel="noreferrer noopener"
-                      href="https://wa.me/529514362937"
-                      target="_blank"
-                      className={`border ${buttonVariants({ variant: "secondary" })}`}
-                    >
-                      <MessageCircle className="mr-2 w-5 h-5" />
-                      Contáctanos
-                    </a>
-                  
-                </nav>
-              </SheetContent>
-            </Sheet>
+          <span className="whitespace-nowrap text-xl font-black text-white sm:text-2xl">
+            INNOVATECH
           </span>
+        </a>
 
-          {/* desktop */}
-          <nav className="hidden md:flex gap-2">
-            {routeList.map((route: RouteProps, i) => (
+        {/* MENÚ MÓVIL DERECHA */}
+        <div className="flex xl:hidden">
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-md text-white transition hover:bg-zinc-900"
+              >
+                <Menu className="h-7 w-7" />
+              </button>
+            </SheetTrigger>
+
+            <SheetContent
+              side="left"
+              className="w-[290px] border-r border-zinc-800 bg-black px-6 text-white sm:w-[340px]"
+            >
+              <SheetHeader>
+                <SheetTitle className="flex items-center justify-center gap-2 text-2xl font-black text-white">
+                  <img
+                    src={miImagen}
+                    alt="Logo"
+                    className="h-9 w-9 object-contain"
+                  />
+                  INNOVATECH
+                </SheetTitle>
+              </SheetHeader>
+
+              <nav className="mt-10 flex flex-col items-center justify-center gap-5 text-center">
+                {routeList.map((route) =>
+                  route.children ? (
+                    <div
+                      key={route.label}
+                      className="flex w-full flex-col items-center text-center"
+                    >
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenMobileDropdown(
+                            openMobileDropdown === route.label
+                              ? null
+                              : route.label
+                          )
+                        }
+                        className="flex items-center justify-center gap-2 rounded-md px-4 py-2 text-lg font-bold text-white transition hover:bg-zinc-900"
+                      >
+                        {route.label}
+
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            openMobileDropdown === route.label
+                              ? "rotate-180"
+                              : ""
+                          }`}
+                        />
+                      </button>
+
+                      {openMobileDropdown === route.label && (
+                        <div className="mt-3 flex flex-col items-center gap-4">
+                          {route.children.map((child) => (
+                            <a
+                              key={child.label}
+                              href={child.href}
+                              onClick={() => {
+                                setIsOpen(false);
+                                setOpenMobileDropdown(null);
+                              }}
+                              className="rounded-md px-4 py-2 text-lg font-bold text-white transition hover:bg-zinc-900"
+                            >
+                              {child.label}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <a
+                      rel="noreferrer noopener"
+                      key={route.label}
+                      href={route.href}
+                      onClick={() => {
+                        setIsOpen(false);
+                        setOpenMobileDropdown(null);
+                      }}
+                      className="rounded-md px-4 py-2 text-lg font-bold text-white transition hover:bg-zinc-900"
+                    >
+                      {route.label}
+                    </a>
+                  )
+                )}
+
+                <a
+                  rel="noreferrer noopener"
+                  href="https://wa.me/529514362937"
+                  target="_blank"
+                  className="mt-2 flex items-center justify-center rounded-md bg-zinc-800 px-6 py-3 text-lg font-bold text-white transition hover:bg-zinc-700"
+                  onClick={() => {
+                    setIsOpen(false);
+                    setOpenMobileDropdown(null);
+                  }}
+                >
+                  <MessageCircle className="mr-2 h-6 w-6" />
+                  Contáctanos
+                </a>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+
+        {/* MENÚ DESKTOP */}
+        <nav className="hidden flex-1 items-center justify-center gap-1 xl:flex">
+          {routeList.map((route, i) =>
+            route.children ? (
+              <div key={i} className="relative">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === route.label ? null : route.label
+                    )
+                  }
+                  className={`flex items-center gap-1 whitespace-nowrap text-sm text-white 2xl:text-base ${buttonVariants(
+                    {
+                      variant: "ghost",
+                    }
+                  )}`}
+                >
+                  {route.label}
+
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform ${
+                      openDropdown === route.label ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {openDropdown === route.label && (
+                  <div className="absolute left-0 top-full z-50 mt-2 flex min-w-[180px] flex-col rounded-md border border-zinc-800 bg-black p-2 shadow-md">
+                    {route.children.map((child) => (
+                      <a
+                        key={child.label}
+                        href={child.href}
+                        onClick={() => setOpenDropdown(null)}
+                        className="rounded-md px-3 py-2 text-sm text-white transition hover:bg-zinc-900"
+                      >
+                        {child.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
               <a
                 rel="noreferrer noopener"
                 href={route.href}
                 key={i}
-                className={`text-[17px] ${buttonVariants({
-                  variant: "ghost",
-                })}`}
+                onClick={() => setOpenDropdown(null)}
+                className={`whitespace-nowrap text-sm text-white 2xl:text-base ${buttonVariants(
+                  {
+                    variant: "ghost",
+                  }
+                )}`}
               >
                 {route.label}
               </a>
-            ))}
-          </nav>
+            )
+          )}
+        </nav>
 
-          <div className="hidden md:flex gap-2">
-            <a
-              rel="noreferrer noopener"
-              href="https://wa.me/529514362937"
-              target="_blank"
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
-            >
-              <MessageCircle className="mr-2 w-5 h-5" />
-              Contáctanos
-            </a>
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu>
+        {/* WHATSAPP DESKTOP */}
+        <div className="hidden shrink-0 xl:flex">
+          <a
+            rel="noreferrer noopener"
+            href="https://wa.me/529514362937"
+            target="_blank"
+            onClick={() => setOpenDropdown(null)}
+            className={`whitespace-nowrap border border-zinc-700 bg-zinc-800 text-white hover:bg-zinc-700 ${buttonVariants(
+              {
+                variant: "secondary",
+              }
+            )}`}
+          >
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Contáctanos
+          </a>
+        </div>
+      </div>
     </header>
   );
 };

@@ -160,7 +160,7 @@ export default function Plataformas() {
 
   return (
     <>
-      <NavbarGorrasPla />
+    
 
       <main className="min-h-screen bg-[radial-gradient(circle_at_70%_30%,rgba(34,197,94,0.22),transparent_35%),#050505] px-3 py-8 text-white sm:px-6 sm:py-10">
         <section className="mx-auto max-w-7xl">

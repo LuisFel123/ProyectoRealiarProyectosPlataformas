@@ -13,7 +13,12 @@ import Plataformas  from "./plataformas/Plataformas";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import Gorras from "./gorras/gorras";
+import Gorras from "./gorras/Gorras";
+import {Ropa} from "./components/ropa/Ropa";
+import Login from "./components/login/Login";
+import Registro from "./components/registrar/Registro";
+import ReestablecerContrasena from "./components/rContrasena/Recuperar";
+import Dashboard from "./components/principal/Dashboard";
 
 function App() {
   const HomePage = (
@@ -31,23 +36,7 @@ function App() {
     </>
   );
 
-  useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    if (window.location.hash) {
-      window.history.replaceState(null, "", "/");
-    }
-
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-    });
-
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100);
-  }, []);
+  
 
   return (
     <BrowserRouter>
@@ -58,6 +47,11 @@ function App() {
         
         <Route path="/plataformas" element={<Plataformas />} />
         <Route path="/gorras" element={<Gorras />} />
+        <Route path="/ropa" element={<Ropa />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route path="/reestablecer-contrasena" element={<ReestablecerContrasena />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
